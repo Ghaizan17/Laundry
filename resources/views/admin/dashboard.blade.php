@@ -26,6 +26,7 @@
                         <th class="p-2 capitalize">Berat/Jumlah</th>
                         <th class="p-2 capitalize">Catatan</th>
                         <th class="p-2 capitalize">Total</th>
+                        <th class="p-2 capitalize">aksi</th>
                     </tr>
                 </thead>
 
@@ -58,9 +59,24 @@
                             @endif
                         </td>
 
-                        <td class="p-2 text-green-500 font-bold">
+                        <td class="border-r border-gray-300 p-2 text-green-500 font-bold">
                             Rp {{ number_format($item->total_harga) }}
                         </td>
+
+                        <td class="p-2 flex items-center justify-center gap-4">
+                            <form action="{{ route('destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin hapus?')" class="flex justify-center" >
+                                @csrf
+                                @method('DELETE')
+                                <button class="bg-rose-500 text-white p-1 flex items-center justify-center rounded">
+                                    <iconify-icon icon="line-md:trash" width="20" height="20"></iconify-icon>
+                                </button>
+                            </form>
+                            <a href="{{ route('edit', $item->id) }}" 
+                                class="bg-yellow-400 hover:bg-yellow-500 text-white p-1 rounded flex items-center justify-center">
+                                    <iconify-icon icon="line-md:edit" width="20" height="20"></iconify-icon>
+                            </a>
+                        </td>
+                        
                     </tr>
                     @endforeach
                 </tbody>

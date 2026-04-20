@@ -66,7 +66,8 @@ class LaundryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $laundry = Laundry::findOrFail($id);
+        return view('admin.edit', compact('laundry'));
     }
 
     /**
@@ -74,7 +75,24 @@ class LaundryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $laundry = Laundry::findOrFail($id);
+
+        // hitung ulang total
+        if ($request->jenis_layanan == 'laundry_kiloan') {
+            $total = $request->berat * 8000;
+        }
+
+        $laundry->update([
+            'nama_pelanggan' => $request->nama_pelanggan,
+            'no_hp' => $request->no_hp,
+            'berat' => $request->berat,
+            'jumlah' => $request->jumlah,
+            'jenis_layanan' => $request->jenis_layanan,
+            'catatan' => $request->catatan,
+            'total_harga' => $total,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Data berhasil diupdate');
     }
 
     /**
@@ -82,6 +100,9 @@ class LaundryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $laundry = Laundry::findOrFail($id);
+        $laundry->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Data berhasil dihapus');
     }
 }
